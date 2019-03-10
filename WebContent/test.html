@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>layui讲解</title>
+    <link rel="stylesheet" href="./layui/css/layui.css">
+</head>
+
+<body>
+    <div class="layui-form-item layui-form" lay-filter="layui-reset-radio">
+        <label class="layui-form-label">单选框</label>
+        <div class="layui-input-block">
+            <input type="radio" name="layui-radio" value="男" title="单选1" lay-filter="layui-radio">
+            <input type="radio" name="layui-radio" value="女" title="单选2" checked lay-filter="layui-radio">
+            <input type="radio" name="layui-radio" value="女" title="单选3" lay-filter="layui-radio">
+        </div>
+    </div>
+    <div class="layui-form-item layui-form" lay-filter="layui-reset-checkbox">
+        <label class="layui-form-label">多选框</label>
+        <div class="layui-input-block">
+            <input type="checkbox" name="layui-checkbox" value="多选1" lay-skin="primary" title="多选1" lay-filter="layui-checkbox">
+            <input type="checkbox" name="layui-checkbox" value="多选2" lay-skin="primary" title="多选2" checked lay-filter="layui-checkbox">
+            <input type="checkbox" name="layui-checkbox" value="多选3" lay-skin="primary" title="多选3" lay-filter="layui-checkbox">
+        </div>
+    </div>
+    <div class="layui-form-item layui-inline  layui-form" lay-filter="layui-reset-selcted">
+        <label class="layui-form-label">下拉框</label>
+        <div class="layui-input-block">
+            <select name="selected" class="selcted" lay-filter="layui-selected">
+                <option value="选择1" >选择1</option>
+                <option value="选择2" selected>选择2</option>
+                <option value="选择3" >选择3</option>
+            </select>
+        </div>
+    </div>
+    <div class="layui-form-item layui-form">
+        <div class="layui-input-block">
+            <button class="reset layui-btn layui-btn-primary">重置</button>
+        </div>
+    </div>
+
+
+    <div>分页加载问题直接查看js</div>
+    <script src="https://cdn.bootcss.com/jquery/1.11.3/jquery.js"></script>
+    <script src="./layui/layui.all.jss"></script>
+    <script>
+        $('.reset').click(function(event) {
+            // 单选重置开始
+            $("input[name='layui-radio']:checked").prop({
+                checked: false
+            });
+            $("input[name='layui-radio']:first-child").prop({
+                checked: true
+            });
+            layui.form.render('radio','layui-reset-radio');
+            // 单选重置结束
+            // 多选重置开始
+            $("input[name='layui-checkbox']:checked").prop({
+                checked: false
+            });
+            $("input[name='layui-checkbox']:first-child").prop({
+                checked: true
+            });
+            layui.form.render('checkbox','layui-reset-checkbox');
+            // 多选重置结束
+            // 下拉重置开始
+            $('.selcted').val('选择1');
+            layui.form.render('select','layui-reset-selcted');
+            // 下拉重置开始
+        });
+        // 监控单选改变
+        layui.form.on("radio(layui-radio)", function(data){
+            console.log(data);
+        });
+        // 监控多选改变
+        layui.form.on('checkbox(layui-checkbox)', function(data){
+            console.log(data);
+        });
+        // 监控下拉改变
+        layui.form.on('select(layui-selected)', function(data){
+            console.log(data);
+        });
+
+        /**
+         * [initPage 初始化分页]
+         * @return {[type]} [description]
+         */
+        function initPage(){
+            layui.laypage.render(
+                { elem: 'page' ,
+                count: $('.layui-table').attr('data-totalRow') ,
+                curr: params.currentPage,
+                limit:params.pageSize,
+                layout: ['count', 'prev', 'page', 'next', 'limit', 'skip'] ,
+                jump: function(obj,first){
+                        if(params.pageSize == obj.limit){
+                            params.currentPage = obj.curr;
+                        }else{
+                            params.currentPage = 1;
+                            params.pageSize = obj.limit;
+                        }
+                        obj.count = $('.layui-table').attr('data-totalRow');
+                        if(!first){
+                            // 判断是否初次加载
+                            initList();
+                        }
+                    }
+                });
+        }
+    </script>
+</body>
+
+</html>
+

@@ -1,0 +1,32 @@
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: #7289da;
+	font-family: "Montserrat", sans-serif;
+}
+
+#canvas {
+	margin: 0px auto;
+	display: block;
+	filter: url("#shadowed-goo");
+}
+
+svg {
+	display: none;
+}
+
+.text {
+	position: relative;
+	color: #cddae2;
+	font-size: 60px;
+	width: 521px;
+	left: 0px;
+	right: 0px;
+	margin-left: auto;
+	margin-right: auto;
+	font-weight: 900;
+}
